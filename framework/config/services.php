@@ -1,0 +1,34 @@
+<?php
+
+use Framework\Renderer\RenderEngineInterface;
+use Framework\Renderer\TwigEngine;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Framework\Resolver\ControllerResolver;
+
+$container = new ContainerBuilder();
+
+$container->register('controllerResolver', ControllerResolver::class)
+    ->addMethodCall('setContainer', [$container]);
+$container->register('argumentResolver', ArgumentResolver::class);
+$container->register('dispatcher', EventDispatcher::class);
+$container->register('requestStack', RequestStack::class);
+$container->register('app', HttpKernel::class)
+    ->setArguments([
+        new Reference('dispatcher'),
+        new Reference('controllerResolver'),
+        new Reference('requestStack'),
+        new Reference('argumentResolver'),
+    ])
+    ->setPublic(true);
+$container->register(TwigEngine::class, TwigEngine::class)
+    ->setArguments([new Twig\Environment(new Twig\Loader\FilesystemLoader('./app/Views'), [])])
+    ->setPublic(true)
+    ->setAutowired(true);
+
+$container->setAlias(RenderEngineInterface::class, TwigEngine::class)->setPublic(true);
+
