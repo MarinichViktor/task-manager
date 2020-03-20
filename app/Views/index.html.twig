@@ -1,6 +1,21 @@
-<html lang="en">
-    <head></head>
-    <body>
-        <h1 style="padding: 10px; background: violet;">{{ title }}</h1>
-    </body>
-</html>
+{% extends "layouts/layout.html.twig" %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div class="container">
+        <div class="row">
+            {% for task in tasks %}
+                <div class="col-4 p-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ task.name }}</h5>
+                            <div>{{ task.email }}</div>
+                            <p class="card-text mt-3 text-secondary">{{ task.description }}</p>
+                            <a href="#" class="btn btn-warning">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

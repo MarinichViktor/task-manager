@@ -1,21 +1,24 @@
 <?php
 namespace App\Controllers;
 
+use App\Entity\Task;
+use App\Repository\TaskRepositoryInterface;
 use Framework\Renderer\RenderEngineInterface;
-use Symfony\Component\HttpFoundation\Response;
 
-class TaskController {
+class TaskController extends Controller {
     private RenderEngineInterface $renderEngine;
+    private TaskRepositoryInterface $repository;
 
-    public function __construct(RenderEngineInterface $renderEngine)
+    public function __construct(RenderEngineInterface $renderEngine, TaskRepositoryInterface $repository)
     {
         $this->renderEngine = $renderEngine;
+        $this->repository = $repository;
     }
 
     public function index()
     {
-        $content = $this->renderEngine->render('index.html.twig', ["title" => 'My dynamic rendered title']);
-
-        return new Response($content, 200);
+        $tasks = $this->repository->listTasks();
+        $content = $this->renderEngine->render('index.html.twig', ['tasks' => $tasks]);
+        return $this->response($content, 200);
     }
 }

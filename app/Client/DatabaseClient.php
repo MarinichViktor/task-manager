@@ -12,7 +12,7 @@ class DatabaseClient implements DatabaseClientInterface
 
     public function __construct()
     {
-        $this->pdo = new PDO('sqlite:db/database.db');
+        $this->pdo = new PDO('sqlite:database.db');
     }
 
     /**
@@ -20,7 +20,7 @@ class DatabaseClient implements DatabaseClientInterface
      */
     public function query(string $sqlQuery, int $mode = PDO::FETCH_ASSOC): array
     {
-        $statement = $this->pdo->query("");
+        $statement = $this->pdo->query($sqlQuery);
         $results = [];
 
         while ($row = $statement->fetch($mode)) {
@@ -38,7 +38,7 @@ class DatabaseClient implements DatabaseClientInterface
         $statement = $this->pdo->prepare($sqlQuery);
 
         foreach ($parameters as $key => $value) {
-            $statement->bindParam($key, $value);
+            $statement->bindValue($key, $value);
         }
 
         if (!$statement->execute()) {

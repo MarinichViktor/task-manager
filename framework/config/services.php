@@ -9,8 +9,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Framework\Resolver\ControllerResolver;
+use Symfony\Component\Serializer\DependencyInjection\SerializerPass;
 
 $container = new ContainerBuilder();
+$container->addCompilerPass(new SerializerPass());
 
 $container->register('controllerResolver', ControllerResolver::class)
     ->addMethodCall('setContainer', [$container]);
