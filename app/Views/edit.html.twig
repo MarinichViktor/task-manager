@@ -34,7 +34,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="completed"><input type="checkbox" name="completed" id="completed" value="{{ task.completed != 0 }}"> Completed</label>
+                        <label for="completed"><input type="checkbox" name="completed" id="completed" {% if task.completed > 0 %}checked="true"{% endif %}"> Completed</label>
                     </div>
                     <div>
                         <button class="btn btn-primary" type="submit">SAVE</button>

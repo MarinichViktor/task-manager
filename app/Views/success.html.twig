@@ -1,0 +1,21 @@
+{% extends "layouts/layout.html.twig" %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="alert alert-success w-100" role="alert">
+                        Task was created successfully. <a href="/">Navigate</a> to tasks list
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        setTimeout(function () {
+            window.location.href = '/';
+        }, 5000)
+    </script>
+{% endblock %}
+

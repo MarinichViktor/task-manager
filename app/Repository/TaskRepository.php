@@ -29,13 +29,14 @@ class TaskRepository implements TaskRepositoryInterface
     public function listTasks(PaginationQuery $query): PaginationResponse
     {
         $count = (int) $this->client->query("SELECT COUNT(*) as count FROM tasks")[0]['count'];
-        $results = $this->client->query("SELECT * FROM tasks LIMIT :limit OFFSET :offset", [
+        $results = $this->client->query("SELECT * FROM tasks ORDER BY {$query->orderBy} {$query->order} LIMIT :limit OFFSET :offset", [
             ':limit' => $query->limit,
             ':offset' => $query->offset,
         ]);
+
         $tasks = array_map(fn($object) => $this->serializer->denormalize($object, Task::class), $results);
 
-        return new PaginationResponse($count, $tasks, $query->page, $query->limit);
+        return new PaginationResponse($count, $tasks, $query->page, $query->limit, $query->orderBy, $query->order);
     }
 
     /**

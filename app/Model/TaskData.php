@@ -19,7 +19,7 @@ class TaskData
         $task->name = $request->get('name');
         $task->email = $request->get('email');
         $task->description = $request->get('description');
-        $task->completed = (int)$request->get('completed', 0);
+        $task->completed = $request->get('completed') ? 1 : 0;
 
         return $task;
     }

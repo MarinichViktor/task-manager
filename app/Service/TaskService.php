@@ -58,7 +58,7 @@ class TaskService implements TaskServiceInterface
         $task = new Task();
         $task->name = $data->name;
         $task->email = $data->email;
-        $task->description = $data->email;
+        $task->description = $data->description;
         $task->completed = $data->completed;
 
         $this->repository->create($task);
@@ -67,12 +67,13 @@ class TaskService implements TaskServiceInterface
     public function update(int $id, TaskData $data): void
     {
         $task = $this->repository->find($id);
+        $markAsEditedByAdmin = $task->description !== $data->description;
         $task->name = $data->name;
         $task->email = $data->email;
         $task->description = $data->email;
         $task->completed = $data->completed;
 
-        if (null !== $this->authenticationService->currentUser()) {
+        if ($markAsEditedByAdmin && null !== $this->authenticationService->currentUser()) {
             $task->editedByAdmin = 1;
         }
 

@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticationController extends Controller
 {
-    private AuthenticationServiceInterface $authenticationService;
     private AuthenticationValidator $validator;
 
     public function __construct(

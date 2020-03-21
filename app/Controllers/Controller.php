@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Controller {
     protected RenderEngineInterface $renderEngine;
-    private AuthenticationServiceInterface $authenticationService;
+    protected AuthenticationServiceInterface $authenticationService;
 
     public function __construct(
         RenderEngineInterface $renderEngine,

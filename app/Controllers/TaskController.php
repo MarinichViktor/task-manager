@@ -3,7 +3,6 @@ namespace App\Controllers;
 
 use App\Model\PaginationQuery;
 use App\Model\TaskData;
-use App\Repository\TaskRepositoryInterface;
 use App\Service\AuthenticationServiceInterface;
 use App\Service\TaskServiceInterface;
 use App\Validator\TaskValidator;
@@ -12,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends Controller {
     private TaskValidator $validator;
-    private AuthenticationServiceInterface $authenticationService;
     private TaskServiceInterface $service;
 
     public function __construct(
@@ -23,7 +21,6 @@ class TaskController extends Controller {
     ) {
         parent::__construct($renderEngine, $authenticationService);
         $this->validator = $validator;
-        $this->authenticationService = $authenticationService;
         $this->service = $service;
     }
 
@@ -45,6 +42,10 @@ class TaskController extends Controller {
 
     public function edit(Request $request, int $id)
     {
+        if (null === $this->authenticationService->currentUser()) {
+            return $this->redirect('/login');
+        }
+
         $task = $this->service->find($id);
         $content = $this->renderEngine->render('edit.html.twig', ['task' => $task]);
 
@@ -63,11 +64,17 @@ class TaskController extends Controller {
         $data = TaskData::fromRequest($request);
         $this->service->create($data);
 
-        return $this->redirect("/");
+        $content = $this->renderEngine->render('success.html.twig');
+
+        return $this->response($content);
     }
 
     public function update(Request $request, int $id)
     {
+        if (null === $this->authenticationService->currentUser()) {
+            return $this->redirect('/login');
+        }
+
         $errors = [];
 
         if (!$this->validator->validate($request, $errors)) {

@@ -3,23 +3,65 @@
     <h1>{{ title }}</h1>
     <div class="container">
         <div class="row">
-            {% for task in response.results %}
-                <div class="col-4 p-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ task.name }}</h5>
-                            <div>{{ task.email }}</div>
-                            <p class="card-text mt-3 text-secondary">{{ task.description }}</p>
+                <div class="col-12 p-2">
+                    <table class="table">
+                        <thead>
+                            <th>
+                                <a href="/?orderBy=name&page={{ response.page }}&order={% if response.isOrderAsc() %}DESC{% else %}ASC{% endif %}">
+                                    Name {% if response.orderBy| lower == 'name' %}<i class="fa fa-fw fa-sort"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th>
+                                <a href="/?orderBy=email&page={{ response.page }}&order={% if response.isOrderAsc() %}DESC{% else %}ASC{% endif %}">
+                                    Email {% if response.orderBy| lower == 'email' %}<i class="fa fa-fw fa-sort"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th>
+                                <a href="/?orderBy=description&page={{ response.page }}&order={% if response.isOrderAsc() %}DESC{% else %}ASC{% endif %}">
+                                    Description {% if response.orderBy| lower == 'description' %}<i class="fa fa-fw fa-sort"></i>{% endif %}
+                                </a>
+                            </th>
+                            <th>Completed</th>
+                            <th></th>
                             {% if user %}
-                                <a href="/edit/{{ task.id }}" class="btn btn-warning">Edit</a>
+                                <th>Edit</th>
                             {% endif %}
-                            {% if task.editedByAdmin == 1 %}
-                                <p class="card-text mt-3 text-secondary">Edited by admin</p>
-                            {% endif %}
-                        </div>
-                    </div>
+                        </thead>
+                        <tbody>
+                            {% for task in response.results %}
+                                <tr>
+                                    <td>{{ task.name }}</td>
+                                    <td>{{ task.email }}</td>
+                                    <td>{{ task.description }}</td>
+                                    <td>{% if task.completed == 0 %}not completed{% else %}completed{% endif %}</td>
+                                    <td>
+                                        {% if task.editedByAdmin %}
+                                            Edited By Admin
+                                        {% endif %}
+                                    </td>
+                                    {% if user %}
+                                        <td>
+                                            <a href="/edit/{{ task.id }}" class="btn btn-warning">Edit</a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-            {% endfor %}
+{#                <div class="card">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">{{ task.name }}</h5>#}
+{#                        <div>{{ task.email }}</div>#}
+{#                        <p class="card-text mt-3 text-secondary">{{ task.description }}</p>#}
+{#                        {% if user %}#}
+{#                            <a href="/edit/{{ task.id }}" class="btn btn-warning">Edit</a>#}
+{#                        {% endif %}#}
+{#                        {% if task.editedByAdmin == 1 %}#}
+{#                            <p class="card-text mt-3 text-secondary">Edited by admin</p>#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                </div>#}
         </div>
         {% if response.isFirstPage() and response.isLastPage() %}
         {% else %}
