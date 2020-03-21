@@ -4,11 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-8 offset-2">
-                <form action="/store" method="post" class="form">
-                    <h2 class="text-center my-3">Create Task</h2>
+                <form action="/edit/{{ task.id }}/save" method="post" class="form">
+                    <h2 class="text-center my-3">Edit Task</h2>
                     <div class="form-group">
                         <label for="">Author Name</label>
-                        <input class="form-control {% if errors['name']['messages'] is defined %}is-invalid{% endif %}" type="text" name="name" value="{% if errors['name']['oldValue'] is defined %}{{ errors['name']['oldValue']  }}{% endif %}">
+                        <input class="form-control {% if errors['name']['messages'] is defined %}is-invalid{% endif %}" type="text" name="name" value="{% if errors['name']['oldValue'] is defined %}{{ errors['name']['oldValue'] }}{% else %}{{ task.name }}{% endif %}">
                         {% if errors['name']['messages'] is defined %}
                             <div class="invalid-feedback">
                                 {{ errors['name']['messages'][0] }}
@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Author Email</label>
-                        <input class="form-control {% if errors['email']['messages'] is defined %}is-invalid{% endif %}" name="email"  value="{% if errors['email']['oldValue'] is defined %}{{ errors['email']['oldValue']  }}{% endif %}">
+                        <input class="form-control {% if errors['email']['messages'] is defined %}is-invalid{% endif %}" name="email" value="{% if errors['email']['oldValue'] is defined %}{{ errors['email']['oldValue'] }}{% else %}{{ task.email }}{% endif %}">
                         {% if errors['email']['messages'] is defined %}
                             <div class="invalid-feedback">
                                 {{ errors['email']['messages'][0] }}
@@ -26,12 +26,15 @@
                     </div>
                     <div class="form-group">
                         <label for="">Description</label>
-                        <textarea name="description" class="form-control {% if errors['description']['messages'] is defined %}is-invalid{% endif %}">{% if errors['description']['oldValue'] is defined %}{{ errors['description']['oldValue'] | trim }}{% endif %}</textarea>
+                        <textarea name="description" class="form-control {% if errors['description']['messages'] is defined %}is-invalid{% endif %}">{% if errors['description']['oldValue'] is defined %}{{ errors['description']['oldValue'] }}{% else %}{{ task.description }}{% endif %}</textarea>
                         {% if errors['description']['messages'] is defined %}
                             <div class="invalid-feedback">
                                 {{ errors['description']['messages'][0] }}
                             </div>
                         {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="completed"><input type="checkbox" name="completed" id="completed" value="{{ task.completed != 0 }}"> Completed</label>
                     </div>
                     <div>
                         <button class="btn btn-primary" type="submit">SAVE</button>

@@ -21,4 +21,12 @@ class TwigEngine implements RenderEngineInterface
     {
         return $this->environment->render($name, $context);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function addGlobal(string $name, $value): void
+    {
+        $this->environment->addGlobal($name, $value);
+    }
 }

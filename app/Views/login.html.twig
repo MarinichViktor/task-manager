@@ -1,0 +1,36 @@
+{% extends "layouts/layout.html.twig" %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <form action="/authenticate" method="post" class="form">
+                    <h2 class="text-center my-3">Login</h2>
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input class="form-control {% if errors['name']['messages'] is defined %}is-invalid{% endif %}" name="name"  value="{% if errors['name']['oldValue'] is defined %}{{ errors['name']['oldValue']  }}{% endif %}">
+                        {% if errors['name']['messages'] is defined %}
+                            <div class="invalid-feedback">
+                                {{ errors['name']['messages'][0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="">Password</label>
+                        <input class="form-control {% if errors['password']['messages'] is defined %}is-invalid{% endif %}" name="password" type="password">
+
+                        {% if errors['password']['messages'] is defined %}
+                            <div class="invalid-feedback">
+                                {{ errors['password']['messages'][0] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

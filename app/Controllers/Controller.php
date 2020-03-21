@@ -1,10 +1,24 @@
 <?php
 namespace App\Controllers;
 
+use App\Service\AuthenticationServiceInterface;
+use Framework\Renderer\RenderEngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 
 class Controller {
+    protected RenderEngineInterface $renderEngine;
+    private AuthenticationServiceInterface $authenticationService;
+
+    public function __construct(
+        RenderEngineInterface $renderEngine,
+        AuthenticationServiceInterface $authenticationService
+    ) {
+        $this->renderEngine = $renderEngine;
+        $this->authenticationService = $authenticationService;
+        $this->renderEngine->addGlobal('user', $this->authenticationService->currentUser());
+    }
+
     /**
      * @param string $content
      * @param int $status

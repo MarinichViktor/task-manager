@@ -27,8 +27,10 @@ $container->register('app', HttpKernel::class)
         new Reference('argumentResolver'),
     ])
     ->setPublic(true);
+$environment = new Twig\Environment(new Twig\Loader\FilesystemLoader('./app/Views'), []);
+$environment->addGlobal("currentUser", ["name" => "john"]);
 $container->register(TwigEngine::class, TwigEngine::class)
-    ->setArguments([new Twig\Environment(new Twig\Loader\FilesystemLoader('./app/Views'), [])])
+    ->setArguments([$environment])
     ->setPublic(true)
     ->setAutowired(true);
 

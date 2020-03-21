@@ -1,18 +1,18 @@
 <?php
 
 
-namespace App\Client;
+namespace App\Service;
 
 
 use App\Entity\User;
 use App\Exception\UserNotFoundException;
 
-interface AuthenticationClientInterface
+interface AuthenticationServiceInterface
 {
     /**
-     * @param User $user
+     * @param string $email
      */
-    public function authenticate(User $user): void;
+    public function authenticate(string $email): void;
 
     /**
      * @return User|null

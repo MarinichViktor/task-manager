@@ -13,4 +13,10 @@ interface RenderEngineInterface
      * @return string
      */
     public function render($name, array $context = []): string;
+
+    /**
+     * @param string $name
+     * @param $value
+     */
+    public function addGlobal(string $name, $value): void;
 }

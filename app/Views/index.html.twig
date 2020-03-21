@@ -10,27 +10,35 @@
                             <h5 class="card-title">{{ task.name }}</h5>
                             <div>{{ task.email }}</div>
                             <p class="card-text mt-3 text-secondary">{{ task.description }}</p>
-                            <a href="#" class="btn btn-warning">Edit</a>
+                            {% if user %}
+                                <a href="/edit/{{ task.id }}" class="btn btn-warning">Edit</a>
+                            {% endif %}
+                            {% if task.editedByAdmin == 1 %}
+                                <p class="card-text mt-3 text-secondary">Edited by admin</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-        <div class="row">
-            <div class="col-4 offset-4">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link btn {% if response.isFirstPage() %}disabled{% endif %}" href="/?page={{ response.page - 1 }}">Previous </a></li>
-                    {% if response.page > 1 %}
-                        <li class="page-item"><a class="page-link" href="/?page={{ response.page - 1 }}">{{ response.page - 1 }}</a></li>
-                    {% endif %}
-                    <li class="page-item active"><a class="page-link btn disabled" href="/?page={{ response.page }}">{{ response.page }}</a></li>
-                    {% if not response.isLastPage() %}
-                        <li class="page-item"><a class="page-link" href="/?page={{ response.page + 1 }}">{{ response.page + 1 }}</a></li>
-                    {% endif %}
-                    <li class="page-item"><a class="page-link btn {% if response.isLastPage() %}disabled{% endif %}" href="/?page={{ response.page + 1 }}">Next</a></li>
-                </ul>
+        {% if response.isFirstPage() and response.isLastPage() %}
+        {% else %}
+            <div class="row">
+                <div class="col-4 offset-4">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link btn {% if response.isFirstPage() %}disabled{% endif %}" href="/?page={{ response.page - 1 }}">Previous </a></li>
+                        {% if response.page > 1 %}
+                            <li class="page-item"><a class="page-link" href="/?page={{ response.page - 1 }}">{{ response.page - 1 }}</a></li>
+                        {% endif %}
+                        <li class="page-item active"><a class="page-link btn disabled" href="/?page={{ response.page }}">{{ response.page }}</a></li>
+                        {% if not response.isLastPage() %}
+                            <li class="page-item"><a class="page-link" href="/?page={{ response.page + 1 }}">{{ response.page + 1 }}</a></li>
+                        {% endif %}
+                        <li class="page-item"><a class="page-link btn {% if response.isLastPage() %}disabled{% endif %}" href="/?page={{ response.page + 1 }}">Next</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}
 

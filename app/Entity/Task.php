@@ -11,4 +11,5 @@ class Task
     public string $email;
     public string $description;
     public int $completed = 0;
+    public int $editedByAdmin = 0;
 }

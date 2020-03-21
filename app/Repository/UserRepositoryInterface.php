@@ -11,10 +11,19 @@ interface UserRepositoryInterface
 {
 
     /**
-     * @param string $email
+     * @param string $name
      * @return User
      *
      * @throws UserNotFoundException
      */
-    public function findByEmail(string $email): User;
+    public function findByName(string $name): User;
+
+    /**
+     * @param string $id
+     *
+     * @return User
+     *
+     * @throws UserNotFoundException
+     */
+    public function find(string $id): User;
 }

@@ -1,14 +1,15 @@
 <?php
 
 
-namespace App\Repository;
+namespace App\Service;
 
 
 use App\Entity\Task;
 use App\Model\PaginationQuery;
 use App\Model\PaginationResponse;
+use App\Model\TaskData;
 
-interface TaskRepositoryInterface
+interface TaskServiceInterface
 {
     /**
      * @param PaginationQuery $query
@@ -25,12 +26,19 @@ interface TaskRepositoryInterface
     public function find(int $id): Task;
 
     /**
-     * @param Task $task
+     * @param int $id
      */
-    public function create(Task $task): void;
+    public function markAsEditedByAdmin(int $id): void;
 
     /**
-     * @param Task $task
+     * @param TaskData $data
      */
-    public function update(Task $task): void;
+    public function create(TaskData $data): void;
+
+    /**
+     * @param int $id
+     *
+     * @param TaskData $data
+     */
+    public function update(int $id, TaskData $data): void;
 }

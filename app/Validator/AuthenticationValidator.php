@@ -4,11 +4,10 @@ namespace App\Validator;
 
 
 use App\Validator\Constraint\ConstraintInterface;
-use App\Validator\Constraint\EmailConstraint;
 use App\Validator\Constraint\RequiredConstraint;
 use Symfony\Component\HttpFoundation\Request;
 
-class TaskValidator implements ValidatorInterface
+class AuthenticationValidator implements ValidatorInterface
 {
     /**
      * @return array
@@ -17,8 +16,7 @@ class TaskValidator implements ValidatorInterface
     {
         return [
             'name' => [new RequiredConstraint()],
-            'email' => [new RequiredConstraint(), new EmailConstraint()],
-            'description' => [new RequiredConstraint()]
+            'password' => [new RequiredConstraint()]
         ];
     }
 

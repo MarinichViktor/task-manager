@@ -14,12 +14,20 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto w-100">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/create">Create <span class="sr-only">(current)</span></a>
+                </li>
+                <div class="w-100"></div>
+                <li class="nav-item pull-right">
+                    {% if user %}
+                        <a class="nav-link active" href="/logout">Logout <span class="sr-only">(current)</span></a>
+                    {% else %}
+                        <a class="nav-link active" href="/login">Login <span class="sr-only">(current)</span></a>
+                    {% endif %}
                 </li>
             </ul>
         </div>

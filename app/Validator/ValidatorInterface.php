@@ -8,12 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface ValidatorInterface
 {
-    public const EMAIL_FORMAT = '\A[a-z0-9!#$%&\'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\z';
+    /**
+     * @return array
+     */
+    public function rules(): array;
 
     /**
      * @param Request $request
      *
-     * @return null | array
+     * @return bool
      */
-    public function validate(Request $request);
+    public function validate(Request $request, array &$errors): bool;
+
 }
