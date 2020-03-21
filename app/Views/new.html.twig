@@ -1,0 +1,44 @@
+{% extends "layouts/layout.html.twig" %}
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <form action="/store" method="post" class="form">
+                    <h2 class="text-center my-3">Create Task</h2>
+                    <div class="form-group">
+                        <label for="">Author Name</label>
+                        <input class="form-control {% if errors['name'] is defined %}is-invalid{% endif %}" type="text" name="name" value="{% if errors['name']['value'] is defined %} {{ errors['name']['value']  }}{% endif %}">
+                        {% if errors['name'] is defined %}
+                            <div class="invalid-feedback">
+                                {{ errors['name']['message'] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="">Author Email</label>
+                        <input class="form-control {% if errors['email'] is defined %}is-invalid{% endif %}" name="email" value="{% if errors['email']['value'] is defined %} {{ errors['email']['value']  }}{% endif %}">
+                        {% if errors is defined and errors['email'] is defined %}
+                            <div class="invalid-feedback">
+                                {{ errors['email']['message'] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="">Description</label>
+                        <textarea name="description" class="form-control {% if errors['description'] is defined %}is-invalid{% endif %}">{% if errors['description']['value'] is defined %}{{ errors['description']['value'] | trim }}{% endif %}</textarea>
+                        {% if errors['description'] is defined %}
+                            <div class="invalid-feedback">
+                                {{ errors['description']['message'] }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">SAVE</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

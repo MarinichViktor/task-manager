@@ -10,5 +10,5 @@ class Task
     public string $name;
     public string $email;
     public string $description;
-    public int $completed;
+    public int $completed = 0;
 }

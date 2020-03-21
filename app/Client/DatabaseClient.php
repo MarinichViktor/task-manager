@@ -18,16 +18,20 @@ class DatabaseClient implements DatabaseClientInterface
     /**
      * @inheritDoc
      */
-    public function query(string $sqlQuery, int $mode = PDO::FETCH_ASSOC): array
+    public function query(string $sqlQuery, array $parameters = [], int $mode = PDO::FETCH_ASSOC): array
     {
-        $statement = $this->pdo->query($sqlQuery);
-        $results = [];
 
-        while ($row = $statement->fetch($mode)) {
-            $results[] = $row;
+        $statement = $this->pdo->prepare($sqlQuery);
+
+        foreach ($parameters as $key => $value) {
+            $statement->bindValue($key, $value);
         }
 
-        return $results;
+        if (!$statement->execute()) {
+            throw new DatabaseException("DatabaseException: Failed to execute: {$sqlQuery}");
+        }
+
+        return $statement->fetchAll($mode);
     }
 
     /**

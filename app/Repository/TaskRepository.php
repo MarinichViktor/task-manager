@@ -6,6 +6,8 @@ namespace App\Repository;
 
 use App\Client\DatabaseClientInterface;
 use App\Entity\Task;
+use App\Model\PaginationQuery;
+use App\Model\PaginationResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -20,12 +22,24 @@ class TaskRepository implements TaskRepositoryInterface
         $this->serializer = $serializer;
     }
 
-    public function listTasks(): array
+    /**
+     * @inheritDoc
+     */
+    public function listTasks(PaginationQuery $query): PaginationResponse
     {
-        $results = $this->client->query("SELECT * FROM tasks");
-        return array_map(fn($object) => $this->serializer->denormalize($object, Task::class), $results);
+        $count = (int) $this->client->query("SELECT COUNT(*) as count FROM tasks")[0]['count'];
+        $results = $this->client->query("SELECT * FROM tasks LIMIT :limit OFFSET :offset", [
+            ':limit' => $query->limit,
+            ':offset' => $query->offset,
+        ]);
+        $tasks = array_map(fn($object) => $this->serializer->denormalize($object, Task::class), $results);
+
+        return new PaginationResponse($count, $tasks, $query->page, $query->limit);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function save(Task $task): void
     {
         $sql = "INSERT INTO tasks(name, email, description, completed) VALUES (:name, :email, :description, :completed)";

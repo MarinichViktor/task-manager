@@ -1,9 +1,11 @@
 <?php
 namespace App\Controllers;
 
-use App\Entity\Task;
+use App\Model\PaginationQuery;
 use App\Repository\TaskRepositoryInterface;
+use App\Validator\TaskValidator;
 use Framework\Renderer\RenderEngineInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends Controller {
     private RenderEngineInterface $renderEngine;
@@ -15,10 +17,31 @@ class TaskController extends Controller {
         $this->repository = $repository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = $this->repository->listTasks();
-        $content = $this->renderEngine->render('index.html.twig', ['tasks' => $tasks]);
+        $query = new PaginationQuery($request->get('limit', 3), $request->get('page', 1));
+        $response = $this->repository->listTasks($query);
+        $content = $this->renderEngine->render('index.html.twig', ['response' => $response]);
+
         return $this->response($content, 200);
+    }
+
+    public function create(Request $request)
+    {
+        $content = $this->renderEngine->render('new.html.twig');
+
+        return $this->response($content, 200);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = new TaskValidator();
+
+        if ($errors = $validator->validate($request)) {
+            $content = $this->renderEngine->render('new.html.twig', ['errors' => $errors]);
+            return $this->response($content, 200);
+        }
+
+        return $this->redirect("/");
     }
 }
